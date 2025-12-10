@@ -2,6 +2,11 @@ const prerender = require('prerender');
 const redisCache = require('prerender-redis-cache');   // ← это ключевой плагин
 
 const server = prerender({
+  chromeLauncher: {
+    executablePath: '/usr/bin/chromium-browser',   // Alpine
+    // executablePath: '/usr/bin/chromium',        // Debian/Ubuntu
+    // executablePath: '/usr/bin/google-chrome',   // если вдруг стоит настоящий Chrome
+  },
   chromeFlags: [
     '--no-sandbox',
     '--disable-setuid-sandbox',
@@ -25,7 +30,7 @@ server.use(prerender.removeScriptTags());
 server.use(prerender.httpHeaders());
 
 // ← вот сюда подключаем кэш
-server.use(redisCache({}));
+server.use(redisCache);
 
 server.start();
 console.log('Prerender server started on port 3000 with Redis cache');
