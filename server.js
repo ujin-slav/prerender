@@ -2,6 +2,7 @@ const prerender = require('prerender');
 const redisCache = require('prerender-redis-cache');   // ← это ключевой плагин
 
 const server = prerender({
+  chromeLocation: '/usr/bin/chromium-browser',
   chromeLauncher: {
     executablePath: '/usr/bin/chromium-browser',   // Alpine
     // executablePath: '/usr/bin/chromium',        // Debian/Ubuntu
