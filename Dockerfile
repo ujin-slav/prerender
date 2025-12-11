@@ -28,6 +28,7 @@ COPY . .
 # Устанавливаем переменные окружения для Chromium (Puppeteer/Prerender их подхватит)
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser \
     CHROME_BIN=/usr/bin/chromium-browser \
+    PRERENDER_CHROME_LOCATION=/usr/bin/chromium-browser \
     NODE_ENV=production \
     PORT=3000
 

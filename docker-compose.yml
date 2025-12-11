@@ -1,0 +1,38 @@
+version: '4.9'
+
+services:
+  prerender:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PRERENDER_CHROME_LOCATION=/usr/bin/chromium-browser
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 768M
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"    # или 443:443 если настроишь SSL
+    restart: unless-stopped
+
+volumes:
+  redis_data:

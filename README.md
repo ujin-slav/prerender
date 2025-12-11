@@ -23,3 +23,20 @@ docker rm prerender
 
 # удалить образ 
 docker rmi prerender-custom
+
+# проверка
+curl http://localhost:3000/https://ya.ru 
+
+###### Compose 
+
+# Первый запуск (сборка образа)
+docker compose up -d --build
+
+# Последующие запуски
+docker compose up -d
+
+# Остановка
+docker compose down
+
+# Полная очистка (включая volumes)
+docker compose down -v
