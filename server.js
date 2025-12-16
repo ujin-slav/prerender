@@ -31,7 +31,7 @@ server.use(prerender.removeScriptTags());
 server.use(prerender.httpHeaders());
 
 // ← вот сюда подключаем кэш
-server.use(redisCache);
+//server.use(redisCache);
 
 server.start();
 console.log('Prerender server started on port 3000 with Redis cache');
