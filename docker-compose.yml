@@ -40,6 +40,7 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d:ro
       - ./letsencrypt:/etc/letsencrypt:ro
       - certbot-webroot:/var/www/certbot
+      - ./nginx/logs:/var/log/nginx 
     depends_on:
       - prerender
 
