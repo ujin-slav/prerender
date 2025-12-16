@@ -1,3 +1,18 @@
+# Установка Docker, Docker-compose 
+sudo apt update
+sudo apt install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
 # Клонируй свой репо (если локально)
 git clone https://github.com/ujin-slav/prerender.git
 cd prerender
@@ -32,6 +47,18 @@ curl http://localhost:3000/https://ya.ru
 # Первый запуск (сборка образа)
 docker compose up -d --build
 
+# Выпуск сертфикатов(сначала удаляем заглушки вместе
+# вместе с папками, иначе certbot запишет новый серты как 001) 
+docker compose exec certbot certbot certonly \
+  --webroot --webroot-path=/var/www/certbot \
+  --email ujin_slav@mail.ru \
+  --agree-tos --no-eff-email \
+  -d ujinslav.fun \
+  -d www.ujinslav.fun
+
+# делаем рестарт nginx 
+docker compose exec nginx nginx -s reload
+
 # Последующие запуски
 docker compose up -d
 
@@ -40,3 +67,9 @@ docker compose down
 
 # Полная очистка (включая volumes)
 docker compose down -v
+
+# Очистка кэша redis 
+docker compose exec redis redis-cli FLUSHDB 
+
+# Проверка синтакиса nginx
+docker compose exec nginx nginx -t
