@@ -36,6 +36,9 @@ docker logs -f prerender
 docker stop prerender
 docker rm prerender
 
+# перезагрузка контейнера
+docker restart
+
 # удалить образ 
 docker rmi prerender-custom
 
